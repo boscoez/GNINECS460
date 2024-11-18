@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "417275309869",
+    "project_id": "gninecs460",
+    "storage_bucket": "gninecs460.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:417275309869:android:9d7dfce512d0cf8c17eda4",
+        "android_client_info": {
+          "package_name": "com.example.gninecs460"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwL7znwF6bmFeX6XrrGZQkRrR7TvKeLak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

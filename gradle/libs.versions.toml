@@ -1,0 +1,41 @@
+[versions]
+agp = "8.3.2"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.0"
+material = "1.12.0"
+activity = "1.9.3"
+constraintlayout = "2.2.0"
+googleServices = "4.4.2"
+firebaseFirestore = "25.1.1"
+firebaseMessaging = "24.0.3"
+okhttp = "4.12.0"
+playServicesCastFramework = "22.0.0"
+media3Common = "1.4.1"
+firebaseAppcheckPlayintegrity = "18.0.0"
+firebaseAppcheckDebug = "18.0.0"
+firebaseStorage = "21.0.1"
+
+[libraries]
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+activity = { group = "androidx.activity", name = "activity", version = "1.9.3" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServices" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+imagepicker = { module = "com.github.dhaval2404:imagepicker", version = "2.1" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+play-services-cast-framework = { group = "com.google.android.gms", name = "play-services-cast-framework", version.ref = "playServicesCastFramework" }
+media3-common = { group = "androidx.media3", name = "media3-common", version.ref = "media3Common" }
+firebase-appcheck-playintegrity = { group = "com.google.firebase", name = "firebase-appcheck-playintegrity", version.ref = "firebaseAppcheckPlayintegrity" }
+firebase-appcheck-debug = { group = "com.google.firebase", name = "firebase-appcheck-debug", version.ref = "firebaseAppcheckDebug" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+
