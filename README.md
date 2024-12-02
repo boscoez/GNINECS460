@@ -31,4 +31,19 @@ Here are some previews of the Academic Alliance Chat Application, arranged in ro
 </p>
 <p float="left">
   <img src="https://github.com/user-attachments/assets/77bf670a-f371-48c2-8100-ff6a43eaf78d" width="30%" />
+  <img src="https://github.com/user-attachments/assets/03d2bfe8-e81b-4cc4-a398-ad477319ea2d" width="30%" />
+  <img src="https://github.com/user-attachments/assets/6b1c3458-f2b1-4584-844d-48671f09c1f6" width="30%" />
+</p>
+<p float="left">
+  <img src="https://github.com/user-attachments/assets/07709609-f743-4d80-bd5c-65e3ab64de4a" width="30%" />
+  <img src="https://github.com/user-attachments/assets/7f28b626-98f1-4705-8ec1-343ec588b364" width="30%" />
+  <img src="https://github.com/user-attachments/assets/9298c8fe-afce-42d3-9dd8-567e40e881d4" width="30%" />
+</p>
+<p float="left">
+  <img src="https://github.com/user-attachments/assets/5abc2758-9bcf-47d2-a249-b28dcbf06296" width="30%" />
+  <img src="https://github.com/user-attachments/assets/6ebbc801-5968-4484-8c98-15c0853517d5" width="30%" />
+  <img src="https://github.com/user-attachments/assets/ee378ccb-87cc-4391-a8fa-76df6c3ae320" width="30%" />
+</p>
+<p float="left">
+  <img src="https://github.com/user-attachments/assets/9a159514-1bb9-4eb9-b4e5-8c53a0cbd34f" width="30%" />
 </p>
