@@ -31,7 +31,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     buildFeatures{
-        viewBinding=true;
+        viewBinding=true
     }
 }
 
@@ -39,13 +39,13 @@ dependencies {
     implementation(libs.imagepicker)
     implementation(libs.firebase.firestore)
     implementation(libs.okhttp)
-    implementation("com.github.bumptech.glide:glide:4.16.0")
-    implementation("com.google.firebase:firebase-storage:21.0.1")
-    implementation("com.firebaseui:firebase-ui-firestore:8.0.2")
-    implementation(platform("com.google.firebase:firebase-bom:33.5.1"))
-    implementation("com.google.firebase:firebase-auth:23.1.0")
-    implementation("com.hbb20:ccp:2.7.3")
-    implementation("com.google.firebase:firebase-messaging:24.0.3")
+    implementation(libs.glide)
+    implementation(libs.firebase.storage)
+    implementation(libs.firebase.ui.firestore)
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation(libs.firebase.auth)
+    implementation(libs.ccp)
+    implementation(libs.firebase.messaging.v2403)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.media3.common)
     implementation(libs.firebase.appcheck.playintegrity)
     implementation(libs.firebase.appcheck.debug)
+    implementation(libs.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

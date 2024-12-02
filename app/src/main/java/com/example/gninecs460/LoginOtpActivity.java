@@ -145,7 +145,7 @@ public class LoginOtpActivity extends AppCompatActivity {
             @Override
             public void run() {
                 timeoutSeconds--;
-                resendOtpTextView.setText("Resend code in "+timeoutSeconds +" seconds");
+                resendOtpTextView.setText("Resend code in "+ timeoutSeconds +" seconds");
                 if(timeoutSeconds<=0){
                     timeoutSeconds =60L;
                     timer.cancel();

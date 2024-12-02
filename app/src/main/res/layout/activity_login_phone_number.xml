@@ -68,7 +68,7 @@
         android:src="@drawable/phone_icon"
         app:tint="@color/my_primary"
         android:layout_weight="10"
-        />
+        android:importantForAccessibility="no" />
 
     <TextView
         android:layout_width="match_parent"
@@ -103,7 +103,8 @@
             android:elevation="5dp"
             android:hint="@string/phone_number"
             android:inputType="phone"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:importantForAutofill="no" />
 
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.example.gninecs460;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +11,7 @@ import com.example.gninecs460.model.UserModel;
 import com.example.gninecs460.utils.AndroidUtil;
 import com.example.gninecs460.utils.FirebaseUtil;
 
+@SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,18 +41,18 @@ public class SplashActivity extends AppCompatActivity {
                     });
 
 
-        } else {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if(FirebaseUtil.isLoggedIn()){
-                        startActivity(new Intent(SplashActivity.this,MainActivity.class));
-                    }else{
-                        startActivity(new Intent(SplashActivity.this,LoginPhoneNumberActivity.class));
+            } else {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(FirebaseUtil.isLoggedIn()){
+                            startActivity(new Intent(SplashActivity.this,MainActivity.class));
+                        }else{
+                            startActivity(new Intent(SplashActivity.this,LoginPhoneNumberActivity.class));
+                        }
+                        finish();
                     }
-                    finish();
-                }
-            },3000);
+                },3000);
+            }
         }
     }
-}

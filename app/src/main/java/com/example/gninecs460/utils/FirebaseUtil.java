@@ -1,5 +1,7 @@
 package com.example.gninecs460.utils;
 
+import android.annotation.SuppressLint;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -18,10 +20,7 @@ public class FirebaseUtil {
     }
 
     public static boolean isLoggedIn(){
-        if(currentUserId()!=null){
-            return true;
-        }
-        return false;
+        return currentUserId() != null;
     }
 
     public static DocumentReference currentUserDetails(){
@@ -40,13 +39,10 @@ public class FirebaseUtil {
         return getChatroomReference(chatroomId).collection("chats");
     }
 
-    public static String getChatroomId(String userId1,String userId2){
-        if(userId1.hashCode()<userId2.hashCode()){
-            return userId1+"_"+userId2;
-        }else{
-            return userId2+"_"+userId1;
-        }
+    public static String getChatroomId(String userId1, String userId2) {
+        return (userId1.hashCode() < userId2.hashCode()) ? userId1 + "_" + userId2 : userId2 + "_" + userId1;
     }
+
 
     public static CollectionReference allChatroomCollectionReference(){
         return FirebaseFirestore.getInstance().collection("chatrooms");
@@ -60,8 +56,9 @@ public class FirebaseUtil {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     public static String timestampToString(Timestamp timestamp){
-        return new SimpleDateFormat("HH:MM").format(timestamp.toDate());
+        return new SimpleDateFormat("HH:mm").format(timestamp.toDate());
     }
 
     public static void logout(){

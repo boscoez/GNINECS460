@@ -12,12 +12,37 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
 
-        <ImageView
-            android:layout_width="180dp"
-            android:layout_height="180dp"
-            android:src="@drawable/chat_icon"
-            app:tint="@color/white"/>
+            <ImageView
+                android:id="@+id/chatIcon"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:src="@drawable/chat_icon"
+                app:tint="@color/white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:importantForAccessibility="no"/>
+
+            <ImageView
+                android:id="@+id/academicAllianceIcon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:importantForAccessibility="no"
+                android:scaleType="centerInside"
+                android:src="@drawable/academicalliancepng"
+                app:layout_constraintBottom_toBottomOf="@id/chatIcon"
+                app:layout_constraintEnd_toEndOf="@id/chatIcon"
+                app:layout_constraintStart_toStartOf="@id/chatIcon"
+                app:layout_constraintTop_toTopOf="@id/chatIcon"
+                app:layout_constraintVertical_bias="0.325" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,7 +63,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Developed by G9"
+        android:text="@string/developed_by_group_9"
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:layout_marginBottom="20dp"

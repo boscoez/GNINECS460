@@ -13,7 +13,7 @@ public class MyApplication extends Application {
         super.onCreate();
 
         // Initialize Firebase
-        FirebaseApp.initializeApp(this);
+        //FirebaseApp.initializeApp(this);
 
         // Initialize App Check
         FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();

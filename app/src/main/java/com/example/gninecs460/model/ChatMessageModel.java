@@ -2,7 +2,6 @@ package com.example.gninecs460.model;
 
 import com.google.firebase.Timestamp;
 
-import com.google.firebase.Timestamp;
 
 public class ChatMessageModel {
     private String message;

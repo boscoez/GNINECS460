@@ -1,11 +1,5 @@
 package com.example.gninecs460;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +7,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gninecs460.adapter.ChatRecyclerAdapter;
 import com.example.gninecs460.model.ChatMessageModel;
@@ -21,12 +21,10 @@ import com.example.gninecs460.model.UserModel;
 import com.example.gninecs460.utils.AndroidUtil;
 import com.example.gninecs460.utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Query;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -62,7 +60,7 @@ public class ChatActivity extends AppCompatActivity {
 
         //get UserModel
         otherUser = AndroidUtil.getUserModelFromIntent(getIntent());
-        chatroomId = FirebaseUtil.getChatroomId(FirebaseUtil.currentUserId(),otherUser.getUserId());
+        chatroomId = FirebaseUtil.getChatroomId(FirebaseUtil.currentUserId(), otherUser.getUserId());
 
         messageInput = findViewById(R.id.chat_message_input);
         sendMessageBtn = findViewById(R.id.message_send_btn);
@@ -117,25 +115,27 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
-    void sendMessageToUser(String message){
-
-        chatroomModel.setLastMessageTimestamp(Timestamp.now());
-        chatroomModel.setLastMessageSenderId(FirebaseUtil.currentUserId());
-        chatroomModel.setLastMessage(message);
-        FirebaseUtil.getChatroomReference(chatroomId).set(chatroomModel);
-
-        ChatMessageModel chatMessageModel = new ChatMessageModel(message,FirebaseUtil.currentUserId(),Timestamp.now());
+    void sendMessageToUser(String message) {
+        if (!chatroomModel.isParticipant(FirebaseUtil.currentUserId())) {
+            Toast.makeText(this, "You are not a participant in this chatroom.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ChatMessageModel chatMessageModel = new ChatMessageModel(message, FirebaseUtil.currentUserId(), Timestamp.now());
         FirebaseUtil.getChatroomMessageReference(chatroomId).add(chatMessageModel)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
-                        if(task.isSuccessful()){
-                            messageInput.setText("");
-                            sendNotification(message);
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        chatroomModel.setLastMessageTimestamp(Timestamp.now());
+                        chatroomModel.setLastMessageSenderId(FirebaseUtil.currentUserId());
+                        chatroomModel.setLastMessage(message);
+                        FirebaseUtil.getChatroomReference(chatroomId).set(chatroomModel);
+                        messageInput.setText("");
+                        sendNotification(message);
+                    } else {
+                        AndroidUtil.showToast(getApplicationContext(), "Failed to send message");
                     }
                 });
     }
+
 
     void getOrCreateChatroomModel(){
         FirebaseUtil.getChatroomReference(chatroomId).get().addOnCompleteListener(task -> {
@@ -147,6 +147,7 @@ public class ChatActivity extends AppCompatActivity {
                             chatroomId,
                             Arrays.asList(FirebaseUtil.currentUserId(),otherUser.getUserId()),
                             Timestamp.now(),
+                            "",
                             ""
                     );
                     FirebaseUtil.getChatroomReference(chatroomId).set(chatroomModel);
@@ -154,37 +155,39 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
-
-    void sendNotification(String message){
-
+    void sendNotification(String message) {
         FirebaseUtil.currentUserDetails().get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
+            if (task.isSuccessful()) {
                 UserModel currentUser = task.getResult().toObject(UserModel.class);
-                try{
-                    JSONObject jsonObject  = new JSONObject();
-
-                    JSONObject notificationObj = new JSONObject();
-                    notificationObj.put("title",currentUser.getUsername());
-                    notificationObj.put("body",message);
-
-                    JSONObject dataObj = new JSONObject();
-                    dataObj.put("userId",currentUser.getUserId());
-
-                    jsonObject.put("notification",notificationObj);
-                    jsonObject.put("data",dataObj);
-                    jsonObject.put("to",otherUser.getFcmToken());
-
+                try {
+                    assert currentUser != null;
+                    JSONObject jsonObject = buildNotificationPayload(currentUser, message, otherUser.getFcmToken());
                     callApi(jsonObject);
-
-
-                }catch (Exception e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    Log.e("NotificationError", "Error building notification JSON", e);
+                    AndroidUtil.showToast(getApplicationContext(), "Failed to send notification");
                 }
-
+            } else {
+                AndroidUtil.showToast(getApplicationContext(), "Failed to fetch user details");
             }
         });
-
     }
+
+    private JSONObject buildNotificationPayload(UserModel user, String message, String recipientToken) throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        JSONObject notificationObj = new JSONObject();
+        notificationObj.put("title", user.getUsername());
+        notificationObj.put("body", message);
+
+        JSONObject dataObj = new JSONObject();
+        dataObj.put("userId", user.getUserId());
+
+        jsonObject.put("notification", notificationObj);
+        jsonObject.put("data", dataObj);
+        jsonObject.put("to", recipientToken);
+        return jsonObject;
+    }
+
 
     void callApi(JSONObject jsonObject){
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
@@ -199,15 +202,21 @@ public class ChatActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-
+                Log.e("FCM_API_CALL", "Failed to send FCM message: " + e.getMessage());
+                runOnUiThread(() -> Toast.makeText(ChatActivity.this, "Notification failed to send.", Toast.LENGTH_SHORT).show());
             }
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-
+                if (response.isSuccessful()) {
+                    Log.i("FCM_API_CALL", "FCM message sent successfully!");
+                } else {
+                    Log.e("FCM_API_CALL", "Error response from FCM: " + response.body().string());
+                    // Handle other HTTP errors here
+                }
+                response.close();
             }
         });
 
     }
-
 }
