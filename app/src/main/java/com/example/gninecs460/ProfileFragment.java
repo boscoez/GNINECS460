@@ -32,7 +32,10 @@ import com.google.firebase.storage.UploadTask;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
-
+/**
+ * ProfileFragment provides the user interface for the user profile section,
+ * where users can view and update their profile information. Developed by Boscoe and Howey.
+ */
 public class ProfileFragment extends Fragment {
 
     ImageView profilePic;
@@ -47,9 +50,11 @@ public class ProfileFragment extends Fragment {
     Uri selectedImageUri;
 
     public ProfileFragment() {
-
+        // Default constructor
     }
-
+    /**
+     * Initializes the activity result launcher for handling profile image selection.
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +70,9 @@ public class ProfileFragment extends Fragment {
                 }
         );
     }
-
+    /**
+     * Creates and inflates the layout for the profile fragment, initializing user interface components.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,6 +107,11 @@ public class ProfileFragment extends Fragment {
 
         });
 
+   /*
+      Sets an OnClickListener on the profile picture ImageView to allow users to select a new image.
+     The ImagePicker is configured to crop the image to a square, compress it to save bandwidth,
+     and restrict the image resolution to a maximum of 512x512 pixels for consistent display.
+    */
         profilePic.setOnClickListener((v)->{
             ImagePicker.with(this).cropSquare().compress(512).maxResultSize(512,512)
                     .createIntent(new Function1<Intent, Unit>() {
@@ -113,7 +125,9 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
-
+    /**
+     * Handles user initiated profile updates including profile picture and username.
+     */
     void updateBtnClick(){
         String newUsername = usernameInput.getText().toString();
         if(newUsername.isEmpty() || newUsername.length()<3){
@@ -133,12 +147,10 @@ public class ProfileFragment extends Fragment {
             updateToFirestore();
         }
 
-
-
-
-
     }
-
+    /**
+     * Updates the user's profile information in Firebase Firestore.
+     */
     void updateToFirestore(){
         FirebaseUtil.currentUserDetails().set(currentUserModel)
                 .addOnCompleteListener(task -> {
@@ -151,8 +163,9 @@ public class ProfileFragment extends Fragment {
                 });
     }
 
-
-
+    /**
+     * Fetches the current user's data from Firebase Firestore, including profile picture and personal information.
+     */
     void getUserData(){
         setInProgress(true);
 
@@ -171,8 +184,9 @@ public class ProfileFragment extends Fragment {
             phoneInput.setText(currentUserModel.getPhone());
         });
     }
-
-
+    /**
+     * Toggles the UI elements' visibility based on the current operation status.
+     */
     void setInProgress(boolean inProgress){
         if(inProgress){
             progressBar.setVisibility(View.VISIBLE);

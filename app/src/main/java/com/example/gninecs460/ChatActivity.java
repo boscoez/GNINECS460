@@ -37,22 +37,28 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
+/**
+ * ChatActivity manages the chat interface where users can send and receive messages.
+ * This class includes functionalities for setting up the chat room, sending messages,
+ * and integrating with Firebase for real-time data exchange.
+ * Developed by:
+ * - Boscoe and Howey: Implemented chat functionalities including message sending and receiving.
+ */
 public class ChatActivity extends AppCompatActivity {
 
     UserModel otherUser;
     String chatroomId;
     ChatroomModel chatroomModel;
     ChatRecyclerAdapter adapter;
-
     EditText messageInput;
     ImageButton sendMessageBtn;
     ImageButton backBtn;
     TextView otherUsername;
     RecyclerView recyclerView;
     ImageView imageView;
-
-
+    /**
+     * Initializes the chat activity with required views and setups for messaging.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +98,9 @@ public class ChatActivity extends AppCompatActivity {
         getOrCreateChatroomModel();
         setupChatRecyclerView();
     }
-
+    /**
+     * Sets up the RecyclerView for displaying chat messages using a FirestoreRecyclerAdapter.
+     */
     void setupChatRecyclerView(){
         Query query = FirebaseUtil.getChatroomMessageReference(chatroomId)
                 .orderBy("timestamp", Query.Direction.DESCENDING);
@@ -114,7 +122,10 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
-
+    /**
+     * Sends a chat message to the Firebase database and updates the chat room's last message details.
+     * @param message The message text to be sent.
+     */
     void sendMessageToUser(String message) {
         if (!chatroomModel.isParticipant(FirebaseUtil.currentUserId())) {
             Toast.makeText(this, "You are not a participant in this chatroom.", Toast.LENGTH_SHORT).show();
@@ -135,8 +146,9 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
     }
-
-
+    /**
+     * Retrieves or creates a new chatroom model for the chat session.
+     */
     void getOrCreateChatroomModel(){
         FirebaseUtil.getChatroomReference(chatroomId).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
@@ -172,7 +184,14 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
-
+    /**
+     * Constructs a JSON payload for sending a push notification via Firebase Cloud Messaging (FCM).
+     * @param user The current user model.
+     * @param message The message to include in the notification.
+     * @param recipientToken The FCM token of the recipient.
+     * @return JSONObject representing the notification payload.
+     * @throws JSONException if there is an error constructing the JSON object.
+     */
     private JSONObject buildNotificationPayload(UserModel user, String message, String recipientToken) throws JSONException {
         JSONObject jsonObject = new JSONObject();
         JSONObject notificationObj = new JSONObject();
@@ -187,8 +206,10 @@ public class ChatActivity extends AppCompatActivity {
         jsonObject.put("to", recipientToken);
         return jsonObject;
     }
-
-
+    /**
+     * Makes an HTTP POST request to send the notification through FCM.
+     * @param jsonObject The JSON payload containing the notification data.
+     */
     void callApi(JSONObject jsonObject){
         MediaType JSON = MediaType.get("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
@@ -214,7 +235,7 @@ public class ChatActivity extends AppCompatActivity {
                     Log.e("FCM_API_CALL", "Error response from FCM: " + response.body().string());
                     // Handle other HTTP errors here
                 }
-                response.close();
+                response.close();// Ensure to close the response body to free up system resources
             }
         });
 

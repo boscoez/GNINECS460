@@ -22,6 +22,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * CalendarActivity manages the calendar interface where users can view and manage their tasks.
+ * This activity includes a calendar view that allows selecting a date to display tasks and
+ * a button to add new tasks. Developed by Diego and Daniel.
+ */
 public class CalendarActivity extends AppCompatActivity {
 
     private RecyclerView taskRecyclerView;
@@ -33,10 +38,12 @@ public class CalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         Log.d("CalendarActivity", "CalendarActivity launched");
+
         CalendarView calendarView = findViewById(R.id.calendar_view);
         taskRecyclerView = findViewById(R.id.task_recycler_view);
         Button addTaskBtn = findViewById(R.id.add_task_btn);
 
+        // Default selected date is today
         selectedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         setupRecyclerView();
 
@@ -44,6 +51,7 @@ public class CalendarActivity extends AppCompatActivity {
             selectedDate = year + "-" + (month + 1) + "-" + dayOfMonth;
             fetchTasks();
         });
+
         Button backToMainBtn = findViewById(R.id.back_to_main_btn);
         backToMainBtn.setOnClickListener(v -> {
             finish(); // Closes the current activity and returns to the main activity
@@ -56,14 +64,17 @@ public class CalendarActivity extends AppCompatActivity {
 
         fetchTasks();
     }
-
+    /**
+     * Sets up the RecyclerView for displaying tasks.
+     */
     private void setupRecyclerView() {
         taskRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         taskAdapter = new TaskAdapter(new ArrayList<>(), this); // Pass `this` as the Context
         taskRecyclerView.setAdapter(taskAdapter);
     }
-
-
+    /**
+     * Fetches tasks from Firebase Firestore based on the selected date.
+     */
     private void fetchTasks() {
         FirebaseFirestore.getInstance().collection("tasks")
                 .whereEqualTo("date", selectedDate)
@@ -83,5 +94,3 @@ public class CalendarActivity extends AppCompatActivity {
                 });
     }
 }
-
-

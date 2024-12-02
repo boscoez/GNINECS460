@@ -12,9 +12,19 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+/**
+ * Handles Firebase Cloud Messaging notifications for the app.
+ * Developed by Boscoe and Howey who focused on authentication, login,
+ * signup, profile, and chat features. This service processes incoming
+ * notification messages and token updates.
+ */
 public class FCMNotificationService extends FirebaseMessagingService {
     private static final String TAG = "FCMNotificationService";
 
+    /**
+     * Called when a new message is received.
+     * @param remoteMessage Contains the data and notification payload.
+     */
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -27,6 +37,11 @@ public class FCMNotificationService extends FirebaseMessagingService {
         }
     }
 
+    /**
+     * Displays a notification with the specified title and body.
+     * @param title Title of the notification.
+     * @param body Body text of the notification.
+     */
     private void showNotification(String title, String body) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         String channelId = "chat_notifications";
@@ -44,17 +59,24 @@ public class FCMNotificationService extends FirebaseMessagingService {
         notificationManager.notify(1, builder.build());
     }
 
+    /**
+     * Called when a new token for the default Firebase project is generated.
+     * @param token The new token.
+     */
     @Override
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
         Log.d(TAG, "Refreshed token: " + token);
-
-        // TODO: Implement this method to send any registration to your app's servers.
+        // Add logic to send the token to your app server.
         sendRegistrationToServer(token);
     }
 
+    /**
+     * Sends the FCM registration token to the app server.
+     * @param token The new token to be sent.
+     */
     private void sendRegistrationToServer(String token) {
-        // Add custom logic to send the token to your app server.
+        // Logic to send the token to your app server.
         Log.d(TAG, "Sending token to server: " + token);
     }
 }

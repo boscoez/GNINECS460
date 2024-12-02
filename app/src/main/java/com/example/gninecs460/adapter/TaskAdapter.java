@@ -21,29 +21,29 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 import java.util.Locale;
-
+/**
+ * Adapter class for handling the display and interaction of tasks within the RecyclerView in the
+ * Academic Alliance Chat Application. This class is responsible for managing task items including
+ * their creation, update, and deletion functionalities.
+ * Developed by Diego and Daniel for the Task Management feature.
+ */
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
-
     private List<TaskModel> taskList;
     private Context context;
-
     public TaskAdapter(List<TaskModel> taskList, Context context) {
         this.taskList = taskList;
         this.context = context;
     }
-
     public void updateTasks(List<TaskModel> updatedTaskList) {
         this.taskList = updatedTaskList;
         notifyDataSetChanged();
     }
-
     @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_item, parent, false);
         return new TaskViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         TaskModel task = taskList.get(position);
@@ -54,15 +54,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         holder.time.setText(task.getTime() != null ? task.getTime() : "No Time");
         holder.completed.setChecked(task.isCompleted());
 
-        // Mark task as complete
+        // Checkbox to mark task as complete
         holder.completed.setOnCheckedChangeListener((buttonView, isChecked) -> {
             task.setCompleted(isChecked);
             FirebaseFirestore.getInstance().collection("tasks")
                     .document(task.getId())
                     .update("completed", isChecked);
         });
-
-        // Delete task
+        // Button to delete a task
         holder.deleteButton.setOnClickListener(v -> {
             FirebaseFirestore.getInstance().collection("tasks")
                     .document(task.getId())
@@ -76,8 +75,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                         Toast.makeText(context, "Error deleting task: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         });
-
-        // Edit task
+        // Button to edit a task
         holder.editButton.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_edit_task, null);
@@ -109,7 +107,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     Toast.makeText(context, "Title is required", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
                 // Update task in Firestore
                 FirebaseFirestore.getInstance().collection("tasks")
                         .document(task.getId())
@@ -125,22 +122,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                             Toast.makeText(context, "Error updating task: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         });
             });
-
             builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
             builder.create().show();
         });
     }
-
     @Override
     public int getItemCount() {
         return taskList.size();
     }
-
     static class TaskViewHolder extends RecyclerView.ViewHolder {
         TextView title, description, date, time;
         CheckBox completed;
         ImageButton deleteButton, editButton;
-
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.task_title);

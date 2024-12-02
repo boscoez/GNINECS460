@@ -4,6 +4,13 @@ import com.google.firebase.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Represents a chatroom within the Academic Alliance Chat Application. This model stores
+ * information about each chatroom, including IDs of participating users, the last message
+ * details, and timestamps to manage and display conversations effectively.
+ * Developed by Group 9 as part of the chat functionalities. Ensures that all data fields are
+ * properly initialized and validates input to maintain data integrity.
+ */
 public class ChatroomModel {
     private String chatroomId;
     private List<String> userIds;
@@ -11,10 +18,21 @@ public class ChatroomModel {
     private String lastMessageSenderId;
     private String lastMessage;
 
+    /**
+     * Default constructor required for Firebase's automatic data mapping.
+     */
     public ChatroomModel() {
-        // Default constructor required for calls to DataSnapshot.getValue(ChatroomModel.class)
+        // Required for calls to DataSnapshot.getValue(ChatroomModel.class)
     }
 
+    /**
+     * Constructs a new ChatroomModel with specified details ensuring all fields are not null.
+     * @param chatroomId Unique identifier for the chatroom.
+     * @param userIds List of user IDs who are participants of the chatroom.
+     * @param lastMessageTimestamp Timestamp of the last message sent in the chatroom.
+     * @param lastMessageSenderId User ID of the sender of the last message.
+     * @param lastMessage Content of the last message.
+     */
     public ChatroomModel(String chatroomId, List<String> userIds, Timestamp lastMessageTimestamp, String lastMessageSenderId, String lastMessage) {
         setChatroomId(chatroomId);
         setUserIds(userIds);
@@ -22,6 +40,8 @@ public class ChatroomModel {
         setLastMessageSenderId(lastMessageSenderId);
         setLastMessage(lastMessage);
     }
+
+    // Getters and setters with null checks and data integrity validations
 
     public String getChatroomId() {
         return chatroomId;

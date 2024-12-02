@@ -9,11 +9,22 @@ public class TaskModel {
     private String date;
     private String time; // Add this field
     private boolean completed;
-
+    /**
+     * Represents a task object within the Academic Alliance Chat Application.
+     * This model is used to store task details and manage task data with Firebase Firestore.
+     */
     public TaskModel() {
-        // Required for Firestore
+        // Empty constructor required for Firestore
     }
-
+    /**
+     * Constructs a new TaskModel with detailed attributes.
+     * @param id          The unique identifier for the task.
+     * @param title       The title of the task.
+     * @param description A brief description of the task.
+     * @param date        The date the task is due.
+     * @param time        The time the task is due.
+     * @param completed   The completion status of the task.
+     */
     public TaskModel(String id, String title, String description, String date, String time, boolean completed) {
         this.id = id;
         this.title = title;

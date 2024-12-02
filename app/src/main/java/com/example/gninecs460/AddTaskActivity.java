@@ -1,18 +1,5 @@
 package com.example.gninecs460;
 
-import static java.util.UUID.randomUUID;
-
-import android.app.TimePickerDialog;
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.gninecs460.model.TaskModel;
-import com.google.firebase.firestore.FirebaseFirestore;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +17,11 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
+/**
+ * Activity to add a new task to the database.
+ * Developed by Diego and Daniel, this class handles the creation and saving of tasks to Firestore.
+ * It includes setting the task's time using a TimePickerDialog.
+ */
 public class AddTaskActivity extends AppCompatActivity {
 
     private EditText titleInput, descriptionInput, timeInput;
@@ -52,6 +44,7 @@ public class AddTaskActivity extends AppCompatActivity {
         String initialTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
         timeInput.setText(initialTime);
 
+        // Set up a time picker dialog to choose the time for the task
         timeInput.setOnClickListener(v -> {
             TimePickerDialog timePickerDialog = new TimePickerDialog(this, (view, hourOfDay, minute) -> {
                 String formattedTime = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
@@ -60,11 +53,13 @@ public class AddTaskActivity extends AppCompatActivity {
             timePickerDialog.show();
         });
 
+        // Set up the save button to create and save a new task
         saveBtn.setOnClickListener(v -> {
             String title = titleInput.getText().toString().trim();
             String description = descriptionInput.getText().toString().trim();
             String time = timeInput.getText().toString().trim();
 
+            // Validate input
             if (title.isEmpty()) {
                 titleInput.setError("Title required");
                 return;
@@ -74,14 +69,16 @@ public class AddTaskActivity extends AppCompatActivity {
                 return;
             }
 
+            // Create a new task model object
             TaskModel task = new TaskModel(UUID.randomUUID().toString(), title, description, selectedDate, time, false);
 
             saveBtn.setEnabled(false); // Prevent double submission
+            // Save the task to Firestore and handle success or failure
             FirebaseFirestore.getInstance().collection("tasks").document(task.getId())
                     .set(task)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(this, "Task added", Toast.LENGTH_SHORT).show();
-                        finish();
+                        finish(); // Close the activity on success
                     })
                     .addOnFailureListener(e -> {
                         saveBtn.setEnabled(true);

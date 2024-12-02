@@ -17,14 +17,24 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+/**
+ * This activity handles the username login functionality for the Academic Alliance Chat Application.
+ * Developed by Boscoe and Howey as part of the authentication module.
+ */
 public class LoginUsernameActivity extends AppCompatActivity {
 
+    // UI components for user interaction
     EditText usernameInput;
     Button letMeInBtn;
     ProgressBar progressBar;
+
+    // User data fields
     String phoneNumber;
     UserModel userModel;
 
+    /**
+     * Initializes the activity, setting up the layout and event listeners.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,18 +44,20 @@ public class LoginUsernameActivity extends AppCompatActivity {
         letMeInBtn = findViewById(R.id.login_let_me_in_btn);
         progressBar =findViewById(R.id.login_progress_bar);
 
+        // Retrieve phone number passed from previous activity
         phoneNumber = getIntent().getExtras().getString("phone");
         getUsername();
 
+        // Sets username upon button click
         letMeInBtn.setOnClickListener((v -> {
             setUsername();
         }));
-
-
     }
 
+    /**
+     * Handles setting the username in Firebase and navigates to the main activity on success.
+     */
     void setUsername(){
-
         String username = usernameInput.getText().toString();
         if(username.isEmpty() || username.length()<3){
             usernameInput.setError("Username length should be at least 3 chars");
@@ -69,9 +81,11 @@ public class LoginUsernameActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
+    /**
+     * Retrieves the username from Firebase and populates the username field if it exists.
+     */
     void getUsername(){
         setInProgress(true);
         FirebaseUtil.currentUserDetails().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -88,6 +102,10 @@ public class LoginUsernameActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Toggles visibility of progress bar and input form based on processing state.
+     * @param inProgress True if the app is processing, false otherwise.
+     */
     void setInProgress(boolean inProgress){
         if(inProgress){
             progressBar.setVisibility(View.VISIBLE);

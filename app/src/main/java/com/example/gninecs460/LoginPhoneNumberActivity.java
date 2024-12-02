@@ -10,7 +10,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.hbb20.CountryCodePicker;
-
+/**
+ * Handles the phone number based login process.
+ * This activity allows the user to enter their phone number, validates it, and sends an OTP for authentication.
+ * Developed by Boscoe and Howey as part of the authentication features of the Academic Alliance Chat Application.
+ */
 public class LoginPhoneNumberActivity extends AppCompatActivity {
 
     CountryCodePicker countryCodePicker;

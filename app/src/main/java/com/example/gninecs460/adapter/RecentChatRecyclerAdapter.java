@@ -21,18 +21,25 @@ import com.example.gninecs460.utils.AndroidUtil;
 import com.example.gninecs460.utils.FirebaseUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-
+/**
+ * Adapter for displaying recent chats in a RecyclerView.
+ * Manages user interactions and chatroom data binding for smooth navigation to chat activities.
+ * Developed by Boscoe and Howey for the chat functionalities of the Academic Alliance Chat Application.
+ */
 public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatroomModel, RecentChatRecyclerAdapter.ChatroomModelViewHolder> {
-
-    Context context;
-
+    private final Context context;
+    /**
+     * Constructs the RecentChatRecyclerAdapter with Firestore options and a context.
+     * @param options FirestoreRecyclerOptions for handling chatroom models.
+     * @param context Application context for resource access and navigation.
+     */
     public RecentChatRecyclerAdapter(@NonNull FirestoreRecyclerOptions<ChatroomModel> options, Context context) {
         super(options);
         this.context = context;
     }
-
     @Override
     protected void onBindViewHolder(@NonNull ChatroomModelViewHolder holder, int position, @NonNull ChatroomModel model) {
+        // Fetches the user associated with the chatroom and binds it to the view holder
         FirebaseUtil.getOtherUserFromChatroom(model.getUserIds())
                 .get().addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
@@ -41,27 +48,26 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                             holder.bind(otherUserModel, model);
                         } else {
                             Log.e("RecentChatAdapter", "UserModel is null");
-                            // Handle case where the user model is null
                         }
                     } else {
                         Log.e("RecentChatAdapter", "Error fetching user", task.getException());
-                        // Handle failure to fetch user
                     }
                 });
     }
-
     @NonNull
     @Override
     public ChatroomModelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.recent_chat_recycler_row, parent, false);
         return new ChatroomModelViewHolder(view);
     }
-
+    /**
+     * ViewHolder class for managing the layout and data of each recent chat item.
+     */
     static class ChatroomModelViewHolder extends RecyclerView.ViewHolder {
-        TextView usernameText;
-        TextView lastMessageText;
-        TextView lastMessageTime;
-        ImageView profilePic;
+        private final TextView usernameText;
+        private final TextView lastMessageText;
+        private final TextView lastMessageTime;
+        private final ImageView profilePic;
 
         public ChatroomModelViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -70,22 +76,29 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
             lastMessageTime = itemView.findViewById(R.id.last_message_time_text);
             profilePic = itemView.findViewById(R.id.profile_pic_image_view);
         }
-
+        /**
+         * Binds a user and chatroom data to the ViewHolder UI components.
+         * @param user The user associated with the chatroom.
+         * @param chat The chatroom model containing recent chat details.
+         */
         public void bind(UserModel user, ChatroomModel chat) {
+            // Load and set the user's profile picture
             FirebaseUtil.getOtherProfilePicStorageRef(user.getUserId()).getDownloadUrl()
                     .addOnCompleteListener(t -> {
                         if (t.isSuccessful() && t.getResult() != null) {
                             Uri uri = t.getResult();
                             AndroidUtil.setProfilePic(itemView.getContext(), uri, profilePic);
                         } else {
-                            profilePic.setImageResource(R.drawable.person_icon);
+                            profilePic.setImageResource(R.drawable.person_icon); // Fallback image
                         }
                     });
 
+            // Bind username, last message, and timestamp
             usernameText.setText(user.getUsername());
             lastMessageText.setText(chat.getLastMessageSenderId().equals(FirebaseUtil.currentUserId()) ? "You: " + chat.getLastMessage() : chat.getLastMessage());
             lastMessageTime.setText(FirebaseUtil.timestampToString(chat.getLastMessageTimestamp()));
 
+            // Navigate to chat activity on click
             itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(itemView.getContext(), ChatActivity.class);
                 AndroidUtil.passUserModelAsIntent(intent, user);
