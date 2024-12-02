@@ -17,7 +17,7 @@ The Academic Alliance Chat Application is designed to facilitate communication a
 
 ## Screenshots
 
-Here are some previews of the Academic Alliance Chat Application, arranged in rows of three for better visual organization:
+Here are some previews of the Academic Alliance Chat Application:
 
 <p float="left">
   <img src="https://github.com/user-attachments/assets/d6b7154f-8f67-42ee-b5c0-508476e23317" width="30%" />
