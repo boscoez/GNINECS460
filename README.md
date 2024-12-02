@@ -15,6 +15,11 @@ The Academic Alliance Chat Application is designed to facilitate communication a
 - **Notification System:** Users receive real-time notifications for new messages and other important updates.
 - **User Profiles:** Customizable user profiles with academic credentials and interests.
 
+## Development Team Contributions
+
+- **Diego and Daniel:** Developed the Calendar and Task Manager features as well as the Firebase backend integration for these features. They also played a significant role in formatting and structuring the project.
+- **Boscoe and Howey:** Responsible for developing the authentication, login, signup, profile, and chat functionalities of the application.
+
 ## Screenshots
 
 Here are some previews of the Academic Alliance Chat Application:
