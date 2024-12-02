@@ -49,9 +49,9 @@ Here are some previews of the Academic Alliance Chat Application:
   <img src="https://github.com/user-attachments/assets/6ebbc801-5968-4484-8c98-15c0853517d5" width="30%" />
   <img src="https://github.com/user-attachments/assets/ee378ccb-87cc-4391-a8fa-76df6c3ae320" width="30%" />
 </p>
-<p float="center">
+<div align="center">
   <img src="https://github.com/user-attachments/assets/9a159514-1bb9-4eb9-b4e5-8c53a0cbd34f" width="30%" />
-</p>
+</div>
 <p float="left">
   <img src="https://github.com/user-attachments/assets/3547f4f6-85d8-42ec-8770-8c9b90ba09fa" width="70%" />
   <img src="https://github.com/user-attachments/assets/2b715ebd-6eaa-401e-963a-d596827af3d9" width="70%" />
