@@ -41,8 +41,7 @@ import okhttp3.Response;
  * ChatActivity manages the chat interface where users can send and receive messages.
  * This class includes functionalities for setting up the chat room, sending messages,
  * and integrating with Firebase for real-time data exchange.
- * Developed by:
- * - Boscoe and Howey: Implemented chat functionalities including message sending and receiving.
+ * Developed by: Boscoe and Howey: Implemented chat functionalities including message sending and receiving.
  */
 public class ChatActivity extends AppCompatActivity {
 

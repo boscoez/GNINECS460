@@ -29,7 +29,7 @@ import java.util.Locale;
  */
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
     private List<TaskModel> taskList;
-    private Context context;
+    private final Context context;
     public TaskAdapter(List<TaskModel> taskList, Context context) {
         this.taskList = taskList;
         this.context = context;

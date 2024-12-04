@@ -1,6 +1,11 @@
 package com.example.gninecs460.model;
 
+import android.icu.text.SimpleDateFormat;
+
 import com.google.firebase.Timestamp;
+
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Represents an individual chat message in the Academic Alliance Chat Application.
@@ -77,4 +82,11 @@ public class ChatMessageModel {
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
+    public String getFormattedTimestamp() {
+        if (timestamp == null) return ""; // Handle null case
+        Date date = timestamp.toDate(); // Convert Firebase Timestamp to Java Date
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.getDefault()); // Format as hh:mm AM/PM
+        return sdf.format(date);
+    }
+
 }

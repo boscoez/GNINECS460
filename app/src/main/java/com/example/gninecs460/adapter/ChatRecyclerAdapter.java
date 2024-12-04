@@ -37,19 +37,25 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
     @Override
     protected void onBindViewHolder(@NonNull ChatModelViewHolder holder, int position, @NonNull ChatMessageModel model) {
         Log.i("FCM", "Binding message");
-        // Check if the message is sent by the current user
+
+        // Get the formatted timestamp
+        String formattedTimestamp = model.getFormattedTimestamp();
+
         if (model.getSenderId().equals(FirebaseUtil.currentUserId())) {
-            // Show the message on the right for the sender
+            // Sender (Right Chat Bubble)
             holder.leftChatLayout.setVisibility(View.GONE);
             holder.rightChatLayout.setVisibility(View.VISIBLE);
             holder.rightChatTextview.setText(model.getMessage());
+            holder.rightChatTimeTextview.setText(formattedTimestamp);
         } else {
-            // Show the message on the left for the receiver
+            // Receiver (Left Chat Bubble)
             holder.rightChatLayout.setVisibility(View.GONE);
             holder.leftChatLayout.setVisibility(View.VISIBLE);
             holder.leftChatTextview.setText(model.getMessage());
+            holder.leftChatTimeTextview.setText(formattedTimestamp);
         }
     }
+
     @NonNull
     @Override
     public ChatModelViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -60,10 +66,13 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
      * ViewHolder for managing chat message items in the RecyclerView.
      * Handles both sender and receiver message layouts.
      */
-    static class ChatModelViewHolder extends RecyclerView.ViewHolder {
-
-        LinearLayout leftChatLayout, rightChatLayout;
-        TextView leftChatTextview, rightChatTextview;
+    public static class ChatModelViewHolder extends RecyclerView.ViewHolder {
+        LinearLayout leftChatLayout;
+        LinearLayout rightChatLayout;
+        TextView leftChatTextview;
+        TextView leftChatTimeTextview; // Add this
+        TextView rightChatTextview;
+        TextView rightChatTimeTextview; // Add this
         /**
          * Initializes the view components for the chat message.
          * @param itemView The view of the chat message row.
@@ -73,7 +82,9 @@ public class ChatRecyclerAdapter extends FirestoreRecyclerAdapter<ChatMessageMod
             leftChatLayout = itemView.findViewById(R.id.left_chat_layout);
             rightChatLayout = itemView.findViewById(R.id.right_chat_layout);
             leftChatTextview = itemView.findViewById(R.id.left_chat_textview);
+            leftChatTimeTextview = itemView.findViewById(R.id.left_chat_time_textview); // Initialize
             rightChatTextview = itemView.findViewById(R.id.right_chat_textview);
+            rightChatTimeTextview = itemView.findViewById(R.id.right_chat_time_textview); // Initialize
         }
     }
 }

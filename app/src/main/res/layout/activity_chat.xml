@@ -80,15 +80,15 @@
             android:inputType="text" />
 
         <ImageButton
-            android:layout_width="78dp"
-            android:layout_height="78dp"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
             android:src="@drawable/icon_send"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:tint="@color/my_primary"
             android:id="@+id/message_send_btn"
-            android:padding="4dp"
+            android:padding="0dp"
             android:layout_marginStart="10dp"
             android:importantForAccessibility="no" />
 
